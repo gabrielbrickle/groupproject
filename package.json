@@ -2,10 +2,24 @@
   "name": "groupdoyoulikememe",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "main.js",
+  "directories": {
+    "test": "test"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gabrielbrickle/groupproject.git"
+  },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gabrielbrickle/groupproject/issues"
+  },
+  "homepage": "https://github.com/gabrielbrickle/groupproject#readme",
+  "dependencies": {
+    "jquery": "^3.0.0"
+  }
 }

@@ -1,10 +1,13 @@
 .page1image img {
     position: relative;
-    width: 100%;
+    /*width: 100%;*/
 }
-.page1image {
+/*.page1image {
     margin-right: 35%;
     margin-left: 35%;
+}*/
+.main {
+  margin-left: 10%;
 }
 h2 {
     text-align: center;
@@ -14,11 +17,29 @@ h2 {
 }
 #name {
     display: inline-block;
+    width: 100%;
 }
-#email {
+
+input#email {
     display: inline-block;
+    width: 100%;
 }
-#commentbox {
+
+textarea#commentbox {
     width: 100%;
     height: 50px;
+}
+.top {
+    position:absolute;
+    left:0; right:0;
+    height: 92px;
+}
+.left {
+    position:absolute;
+    left:0; top:92px; bottom: 0;
+    width: 178px;
+}
+.main {
+    position: absolute;
+    left:178px; top:92px; right:0; bottom:0;
 }
