@@ -1,5 +1,7 @@
 package com.studenttheironyard;
 
+import java.util.ArrayList;
+
 /**
  * Created by hoseasandstrom on 6/16/16.
  */
@@ -8,6 +10,7 @@ public class Meme {
     String memeName;
     Integer upVote;
     Integer downVote;
+    ArrayList<Comment> memeComments = new ArrayList<>();
 
     public Meme(Integer memeId, String memeName, Integer upVote, Integer downVote) {
         this.memeId = memeId;
