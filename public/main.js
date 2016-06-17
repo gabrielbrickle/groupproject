@@ -22,8 +22,8 @@ var doYouLikeMeme = {
       var input_value = $(this).find('.messageval').val();
       var user_value = $(this).find('.usernameval').val();
       var thingToCreate = {
-        comment: input_value,
-        username: user_value
+        text: input_value,
+        name: user_value
       }
       doYouLikeMeme.createPost(thingToCreate)
       $('.comments').append(`<li>${user_value}${input_value}<a href=""> x</a></li>`);
@@ -55,7 +55,7 @@ var doYouLikeMeme = {
     $(this).parent().text($this.val()).append('<a href=""> ✓</a>');
     $this.remove();
     doYouLikeMeme.editPost({
-      comment: newLiVal,
+      text: newLiVal,
       _id: $this.data('id')
     })
   });
@@ -140,7 +140,7 @@ var doYouLikeMeme = {
         $(".totalcomments").find('h5').text("Total Comments: " + data.length ); ///num of list items
         $('.comments').html("");
         data.forEach(function(element,idx) {
-          var toDoStr = `<li data-id="${element._id}"> ${element.username}:                     ${element.comment}<a href=""> x</a></li>`
+          var toDoStr = `<li data-id="${element._id}"> ${element.name}:                     ${element.text}<a href=""> x</a></li>`
           $('.comments').append(toDoStr)
           doYouLikeMeme.comments.push(element);
         });
