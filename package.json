@@ -1,7 +1,6 @@
 {
   "name": "groupdoyoulikememe",
   "version": "1.0.0",
-  "description": "",
   "main": "main.js",
   "directories": {
     "test": "test"
@@ -20,6 +19,9 @@
   },
   "homepage": "https://github.com/gabrielbrickle/groupproject#readme",
   "dependencies": {
-    "jquery": "^3.0.0"
-  }
+    "jquery": "^3.0.0",
+    "underscore": "^1.8.3"
+  },
+  "devDependencies": {},
+  "description": ""
 }

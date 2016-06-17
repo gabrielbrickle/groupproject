@@ -3,45 +3,75 @@
 
 <head>
     <meta charset="utf-8">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.css">
-    <link rel="stylesheet" href="node_modules/bootstrap" media="screen" title="no title" charset="utf-8">
+    <title>doyoulikememe</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.1.1/normalize.css" media="screen" title="no title" charset="utf-8">
+    <link href='https://fonts.googleapis.com/css?family=Chewy' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Dosis:300,400' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css" media="screen" title="no title" charset="utf-8">
     <link rel="stylesheet" href="styles.css" media="screen" title="no title" charset="utf-8">
-    <title>doyoulikeMeme</title>
 </head>
 
 <body>
+<header>
   <div class="top">
-    <header>
-        <h2>doyoulikeMeme?</h2>
-    </header>
+      <h2>doyoulikeMeme?</h2>
   </div>
-  <div class="left">
-  <a href="#" class="upvotes">Up Votes</a><br>
-  <a href="#" class="downvotes">Down Votes</a>
-  </div>
-  <div class="main">
-    <div class="page1image">
-        <div class="sidebar">
+
+</header>
+<div class="nav">
+<ul>
+  <li class="best"><a href="#">Top Memes</a></li>
+  <li class="worst"><a href="#">Worst Memes</a></li>
+
+</ul>
+
+</div>
+
+
+
+    <div class="main">
+        <div class="images">
+            <img src="images/cat.png" alt="" />
+        </div>
+        <div class="thumbs">
+          <a href="#"><img src="images/thumbsup.png" alt="" /></a>
+          <a href="#"><img src="images/thumbsdown.png" alt="" /></a>
 
         </div>
-        <img src="images/cat.png" alt="" />
-        <div class="comment">
-          <input type="text" name="name" placeholder="Username" id="name">
-          <input type="text" name="email" placeholder="Email" id="email">
-          <textarea name="comment" id="commentbox"></textarea>
+
+
+            <form class="" action="index.html" method="post">
+              <input class="usernameval" name="username" name="name" value="" placeholder="Comment"/>
+              <!-- <input class="messageval"name="usermessage" type="text" id="usermsg" size="63" placeholder="Type a message..." /> -->
+                <textarea name="" id="textarea"></textarea>
+                <ul class="comments">
+
+                </ul>
+            </form>
+            <div class="totalcomments">
+                <h5> </h5>
+            </div>
+            <div class="actions">
+
         </div>
+
+
+
     </div>
-    <div class="page2images">
-
-    </div>
-
-  </div>
 
 
+    <footer>
 
-  <script src="node_modules/jquery/dist/jquery.js"></script>
-    <script src="main.js" type="text/javascript"></script>
+    </footer>
 
+
+
+
+
+
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <script src="node_modules/underscore/underscore.js" charset="utf-8"></script>
+    <script src="main.js" charset="utf-8"></script>
 </body>
 
 </html>
