@@ -4,6 +4,7 @@ $(document).ready(function() {
 
 var doYouLikeMeme = {
   url: 'http://tiny-tiny.herokuapp.com/collections/doyoulikememe',
+  // urlmemes: 'http://tiny-tiny.herokuapp.com/collections/doyoulikememevotes',
   comments: [],
   init: function() {
     doYouLikeMeme.styling();
@@ -24,20 +25,20 @@ var doYouLikeMeme = {
         username: user_value
       }
       doYouLikeMeme.createPost(thingToCreate)
-      $('.comments').append(`<li>${user_value}   ${input_value}<a href=""> x</a></li>`);
+      $('.comments').append(`<li>${user_value}${input_value}<a href=""> x</a></li>`);
     };
     $('input').val('');
     return false;
   })
   //delete
-  $(document).on('click', 'a', function (element) {
-    event.preventDefault();
-    var commentId = $(this).parent().data('id');
-    console.log("ID", commentId)
-    window.glob = $(this);
-    $(this).parent().remove();
-    doYouLikeMeme.deletePost(commentId);
-  });
+  // $(document).on('click', 'a', function (element) {
+  //   event.preventDefault();
+  //   var commentId = $(this).parent().data('id');
+  //   console.log("ID", commentId)
+  //   window.glob = $(this);
+  //   $(this).parent().remove();
+  //   doYouLikeMeme.deletePost(commentId);
+  // });
 
   ////editing a post
   var newLiVal;
@@ -57,6 +58,35 @@ var doYouLikeMeme = {
       _id: $this.data('id')
     })
   });
+  $('.best').on('click', function(){
+    event.preventDefault();
+    console.log("you clicked best");
+  });
+  $('.worst').on('click', function(){
+    event.preventDefault();
+    console.log("you clicked worst");
+  });
+
+  $('.thumbsup').on('click', function (event) {
+    event.preventDefault();
+
+    var element = event.currentTarget;
+    element.clicks = (element.clicks || 0) + 1;
+    console.log(element.clicks);
+    // .getElementById(data.)
+
+});
+  $('.thumbsdown').on('click', function (event) {
+    event.preventDefault();
+
+    var element = event.currentTarget;
+    element.clicks = (element.clicks || 0) + 1;
+    console.log(element.clicks);
+});
+/////getting images off of the page1image
+var img = document.getElementsByTagName('img');
+var image= img; /////this returns an array of images
+console.log(image[1]);/////this returns the second image in the array
 
 
 
@@ -133,3 +163,13 @@ var doYouLikeMeme = {
   },
 
 };
+
+
+
+
+// var objToSave {
+//
+//  id: $(img).data('id')
+//  up: 1,
+//  down: 0
+// }
