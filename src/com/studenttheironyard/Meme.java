@@ -7,14 +7,14 @@ import java.util.ArrayList;
  */
 public class Meme {
     Integer memeId;
-    String memeName;
+    String url;
     Integer upVote;
     Integer downVote;
     ArrayList<Comment> memeComments = new ArrayList<>();
 
     public Meme(Integer memeId, String memeName, Integer upVote, Integer downVote) {
         this.memeId = memeId;
-        this.memeName = memeName;
+        this.url = memeName;
         this.upVote = upVote;
         this.downVote = downVote;
     }
@@ -30,12 +30,12 @@ public class Meme {
         this.memeId = memeId;
     }
 
-    public String getMemeName() {
-        return memeName;
+    public String getUrl() {
+        return url;
     }
 
-    public void setMemeName(String memeName) {
-        this.memeName = memeName;
+    public void setUrl(String url) {
+        this.url = url;
     }
 
     public Integer getUpVote() {
