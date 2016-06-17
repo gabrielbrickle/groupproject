@@ -4,8 +4,9 @@ $(document).ready(function() {
 
 var doYouLikeMeme = {
   url: 'http://tiny-tiny.herokuapp.com/collections/doyoulikememe',
-  // urlmemes: 'http://tiny-tiny.herokuapp.com/collections/doyoulikememevotes',
+  urlmemes: 'http://tiny-tiny.herokuapp.com/collections/doyoulikememevotes',
   comments: [],
+  thumbclicks: [],
   init: function() {
     doYouLikeMeme.styling();
     doYouLikeMeme.events();
@@ -74,23 +75,27 @@ var doYouLikeMeme = {
     element.clicks = (element.clicks || 0) + 1;
     console.log(element.clicks);
     // .getElementById(data.)
+    var thingToPost = {
+      clicks: Number(1)
+    }
 
 });
   $('.thumbsdown').on('click', function (event) {
     event.preventDefault();
-
     var element = event.currentTarget;
-    element.clicks = (element.clicks || 0) + 1;
-    console.log(element.clicks);
-});
+    // element.clicks = (element.clicks || 0) - 1;
+      var total_clicks = element.clicks;
+      var thingToPost = {
+        clicks: Number(-1)
+      }
+      doYouLikeMeme.createClick(thingToPost)
+  });
+
+
 /////getting images off of the page1image
-var img = document.getElementsByTagName('img');
-var image= img; /////this returns an array of images
-console.log(image[1]);/////this returns the second image in the array
-
-
-
-
+      var img = document.getElementsByTagName('img');
+      var image= img; /////this returns an array of images
+      console.log(image[1]);/////this returns the second image in the array
     },
 
 ///begin ajax
@@ -110,6 +115,21 @@ console.log(image[1]);/////this returns the second image in the array
       }
     })
   },
+  createClick: function(thingClicked) {
+    $.ajax({
+      url: doYouLikeMeme.urlmemes,
+      method: "POST",
+      data: thingClicked,
+      success: function(data) {
+        console.log("works", data);
+          doYouLikeMeme.thumbclicks.push(data);
+          doYouLikeMeme.getPost();
+      },
+      error: function(err) {
+        console.error("OH CRAP", err);
+      }
+    })
+  },
 
   getPost: function() {
     $.ajax({
@@ -120,10 +140,24 @@ console.log(image[1]);/////this returns the second image in the array
         $(".totalcomments").find('h5').text("Total Comments: " + data.length ); ///num of list items
         $('.comments').html("");
         data.forEach(function(element,idx) {
-          var toDoStr = `<li data-id="${element._id}"> ${element.username}${element.comment}<a href=""> x</a></li>`
+          var toDoStr = `<li data-id="${element._id}"> ${element.username}:                     ${element.comment}<a href=""> x</a></li>`
           $('.comments').append(toDoStr)
           doYouLikeMeme.comments.push(element);
         });
+      },
+      error: function(err) {
+        console.error("ugh", err);
+      }
+    })
+  },
+  getClick: function() {
+    $.ajax({
+      url: doYouLikeMeme.urlmemes,
+      method: "GET",
+      success: function(data) {
+        console.log("WE GOT SOMETHING", data);
+          doYouLikeMeme.thumbclicks.push('');
+        // });
       },
       error: function(err) {
         console.error("ugh", err);
@@ -162,6 +196,7 @@ console.log(image[1]);/////this returns the second image in the array
       })
   },
 
+
 };
 
 
@@ -173,3 +208,5 @@ console.log(image[1]);/////this returns the second image in the array
 //  up: 1,
 //  down: 0
 // }
+
+// $('img')[0].src = "http://www.fillmurray.com/200/300"
