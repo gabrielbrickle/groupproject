@@ -107,8 +107,10 @@ public class Main {
         Server.createWebServer().start();
         Connection conn = DriverManager.getConnection("jdbc:h2:./main");
         createTables(conn);
+
         Spark.externalStaticFileLocation("public");
         Spark.init();
+
 
         Spark.get(
                 "/user",
