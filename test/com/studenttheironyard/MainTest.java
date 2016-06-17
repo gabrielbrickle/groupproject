@@ -20,8 +20,8 @@ public class MainTest {
     @Test
     public void testUser() throws SQLException {
         Connection conn = startConnection();
-        Main.insertUser(conn, "Alice", "password");
-        User user = Main.selectUser(conn, "Alice");
+        Main.insertUser(conn, "Alice", "alice@gmail.com");
+        User user = Main.insertUser(conn, "Alice", "alice@gmail.com");
         conn.close();
         assertTrue(user != null);
     }
