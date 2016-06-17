@@ -13,7 +13,7 @@ var doYouLikeMeme = {
   },
   styling: function() {
     doYouLikeMeme.getPost();
-  },//end styling
+  },
   events: function() {
 //New Comment
   $('form').submit(function () {
