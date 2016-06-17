@@ -52,9 +52,18 @@ public class Main {
 
     public static ArrayList<Comment> selectAllComments(Connection conn) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("SELECT * FROM comments");
-        ArrayList<Comment> commens = new ArrayList<>();
+        ArrayList<Comment> comments = new ArrayList<>();
+        ResultSet results = stmt.executeQuery();
+        while (results.next()) {
+            int commentid = results.getInt("commentid");
+            String author = results.getString("author");
+            String text = results.getString("text");
+            Comment comment = new Comment(commentid, author, text);
+            comments.add(comment);
+        }
+
         stmt.execute();
-        return commens;
+        return comments;
     }
 
     public static Comment selectComment(Connection conn, int commentId) throws SQLException {
