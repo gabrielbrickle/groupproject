@@ -17,7 +17,7 @@ public class Main {
     public static void createTables(Connection conn) throws SQLException {
         Statement stmt = conn.createStatement();
         stmt.execute("CREATE TABLE IF NOT EXISTS users( userid IDENTITY, name VARCHAR, email VARCHAR)");
-        stmt.execute("CREATE TABLE IF NOT EXISTS comments( commentid IDENTITY, author VARCHAR, text VARCHAR, user_id INT)");
+        stmt.execute("CREATE TABLE IF NOT EXISTS comments( commentid IDENTITY, author VARCHAR, text VARCHAR)");
         stmt.execute("CREATE TABLE IF NOT EXISTS memes(memeid IDENTITY, memename VARCHAR, upvote INT, downvote INT)");
     }
 
@@ -42,11 +42,12 @@ public class Main {
         return userArrayList;
     }
 
-    public static void insertComment(Connection conn, String text, int userId) throws SQLException {
+    public static void insertComment(Connection conn, Comment comment) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("INSERT INTO comments VALUES (NULL, ?, ?)");
-        stmt.setString(1, text);
-        stmt.setInt(2, userId);
+        stmt.setString(1, comment.author);
+        stmt.setString(2, comment.text);
         stmt.execute();
+
     }
 
     public static ArrayList<Comment> selectAllComments(Connection conn) throws SQLException {
@@ -111,63 +112,25 @@ public class Main {
         Spark.externalStaticFileLocation("public");
         Spark.init();
 
-
         Spark.get(
-                "/user",
+                "/meme",
                 (request, response) -> {
-                    ArrayList<User> userArrayList = selectUsers(conn);
-                    ArrayList<Meme> memeArrayList = selectMemes(conn);
-                    ArrayList<Comment> commentArrayList = selectAllComments(conn);
+                    ArrayList<Comment> commentList = selectAllComments(conn);
                     JsonSerializer s = new JsonSerializer();
-                    return s.serialize(userArrayList);
+                    return s.serialize(commentList);
                 }
         );
 
         Spark.post(
-                "/user",
+                "/meme",
                 (request, response) -> {
                     String body = request.body();
                     JsonParser p = new JsonParser();
-                    User user = p.parse(body, User.class);
-                    insertUser(conn, user.name, user.email);
+                    Comment comment = p.parse(body, Comment.class);
+                    insertComment(conn, comment);
                     return "";
                 }
         );
-
-//        Spark.post(
-//                "/user",
-//                (request, response) -> {
-//                    String body = request.body();
-//                    JsonParser p = new JsonParser();
-//                    User user = p.parse(body, User.class);
-//                    insertUser(conn, user.name, user.email);
-//                    return "";
-//                }
-//        );
-//
-//
-//
-//        Spark.put(
-//                "/user",
-//                (request, response) -> {
-//                    String body = request.body();
-//                    JsonParser p = new JsonParser();
-//                    User user = p.parse(body, User.class);
-//                    updateUsers(conn, user, user.id);
-//                    return "";
-//                }
-//        );
-//
-//        //Create a DELETE route called /user/:id that gets the id via request.params(":id")
-//        // and gives it to deleteUser to delete it in the database.
-//        Spark.delete(
-//                "/user/:id",
-//                (request, response) -> {
-//                    int id = Integer.valueOf(request.params(":id"));
-//                    deleteUser(conn, id);
-//                    return "";
-//                }
-//        );
 
     }
 }
