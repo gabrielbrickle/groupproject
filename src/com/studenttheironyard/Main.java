@@ -1,5 +1,6 @@
 package com.studenttheironyard;
 
+import jodd.json.JsonParser;
 import jodd.json.JsonSerializer;
 import org.h2.command.ddl.CreateTable;
 import org.h2.tools.Server;
@@ -16,8 +17,8 @@ public class Main {
     public static void createTables(Connection conn) throws SQLException {
         Statement stmt = conn.createStatement();
         stmt.execute("CREATE TABLE IF NOT EXISTS users( userid IDENTITY, name VARCHAR, email VARCHAR)");
-        stmt.execute("CREATE TABLE IF NOT EXISTS comments( commentid IDENTITY, replyID INT, author VARCHAR, text VARCHAR");
-        stmt.execute("CREATE TABLE IF NOT EXISTS memes(memeid IDENTITY, memename VARCHAR, upvote INT, downvote INT");
+        stmt.execute("CREATE TABLE IF NOT EXISTS comments( commentid IDENTITY, author VARCHAR, text VARCHAR, user_id INT)");
+        stmt.execute("CREATE TABLE IF NOT EXISTS memes(memeid IDENTITY, memename VARCHAR, upvote INT, downvote INT)");
     }
 
     public static void insertUser(Connection conn, String name, String email) throws SQLException {
@@ -48,6 +49,13 @@ public class Main {
         stmt.execute();
     }
 
+    public static ArrayList<Comment> selectAllComments(Connection conn) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM comments");
+        ArrayList<Comment> commens = new ArrayList<>();
+        stmt.execute();
+        return commens;
+    }
+
     public static Comment selectComment(Connection conn, int commentId) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("SELECT * FROM comments INNER JOIN users ON comments.user_id = users.id WHERE users.id = ?");
         stmt.setInt(1, commentId);
@@ -74,14 +82,26 @@ public class Main {
         stmt.execute();
     }
 
-    public static void insertMeme(Connection conn, int upVote, int downVote) throws SQLException {
-        PreparedStatement stmt = conn.prepareStatement("INSERT INTO memes VALUES(NULL, NULL, ?, ?");
+    public static void updateUpVote(Connection conn, int upVote, int memeId) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("UPDATE memes SET up_vote = ? WHERE meme_id= ?");
         stmt.setInt(1, upVote);
-        stmt.setInt(2, downVote);
+        stmt.setInt(2, memeId);
         stmt.execute();
     }
 
+    public static void updateDownVote(Connection conn, int downVote, int memeId) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("UPDATE memes SET up_vote = ? WHERE meme_id= ?");
+        stmt.setInt(1, downVote);
+        stmt.setInt(2, memeId);
+        stmt.execute();
+    }
 
+    public static ArrayList<Meme> selectMemes(Connection conn) throws SQLException {
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM memes");
+        ArrayList<Meme> memesArrayList = new ArrayList<>();
+        stmt.execute();
+        return memesArrayList;
+    }
 
     public static void main(String[] args) throws SQLException {
         Server.createWebServer().start();
@@ -89,15 +109,64 @@ public class Main {
         createTables(conn);
 
         Spark.init();
+       // Spark.externalStaticFileLocation("public");
 
         Spark.get(
                 "/user",
                 (request, response) -> {
-                    ArrayList<User> regs = selectUsers(conn);
+                    ArrayList<User> userArrayList = selectUsers(conn);
+                    ArrayList<Meme> memeArrayList = selectMemes(conn);
+                    ArrayList<Comment> commentArrayList = selectAllComments(conn);
                     JsonSerializer s = new JsonSerializer();
-                    return s.serialize(regs);
+                    return s.serialize(userArrayList);
                 }
         );
+
+        Spark.post(
+                "/user",
+                (request, response) -> {
+                    String body = request.body();
+                    JsonParser p = new JsonParser();
+                    User user = p.parse(body, User.class);
+                    insertUser(conn, user.name, user.email);
+                    return "";
+                }
+        );
+
+//        Spark.post(
+//                "/user",
+//                (request, response) -> {
+//                    String body = request.body();
+//                    JsonParser p = new JsonParser();
+//                    User user = p.parse(body, User.class);
+//                    insertUser(conn, user.name, user.email);
+//                    return "";
+//                }
+//        );
+//
+//
+//
+//        Spark.put(
+//                "/user",
+//                (request, response) -> {
+//                    String body = request.body();
+//                    JsonParser p = new JsonParser();
+//                    User user = p.parse(body, User.class);
+//                    updateUsers(conn, user, user.id);
+//                    return "";
+//                }
+//        );
+//
+//        //Create a DELETE route called /user/:id that gets the id via request.params(":id")
+//        // and gives it to deleteUser to delete it in the database.
+//        Spark.delete(
+//                "/user/:id",
+//                (request, response) -> {
+//                    int id = Integer.valueOf(request.params(":id"));
+//                    deleteUser(conn, id);
+//                    return "";
+//                }
+//        );
 
     }
 }
