@@ -6,14 +6,14 @@ import java.util.ArrayList;
  * Created by hoseasandstrom on 6/16/16.
  */
 public class Meme {
-    Integer memeId;
+    Integer id;
     String url;
     Integer upVote;
     Integer downVote;
     ArrayList<Comment> memeComments = new ArrayList<>();
 
-    public Meme(Integer memeId, String memeName, Integer upVote, Integer downVote) {
-        this.memeId = memeId;
+    public Meme(Integer id, String memeName, Integer upVote, Integer downVote) {
+        this.id = id;
         this.url = memeName;
         this.upVote = upVote;
         this.downVote = downVote;
@@ -22,12 +22,12 @@ public class Meme {
     public Meme() {
     }
 
-    public Integer getMemeId() {
-        return memeId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setMemeId(Integer memeId) {
-        this.memeId = memeId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getUrl() {

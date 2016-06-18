@@ -53,7 +53,7 @@ public class MainTest {
         Connection conn = startConnection();
         Meme meme = new Meme(1, "a", 5, 2);
         //insert meme to run
-        Main.updateUpVote(conn, 1, 1);
+        Main.updateUpVote(conn, meme);
         ArrayList<Meme> testMemeList = Main.selectMemes(conn);
         Meme testMeme = testMemeList.get(0);
         conn.close();

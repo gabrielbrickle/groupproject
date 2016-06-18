@@ -4,22 +4,22 @@ package com.studenttheironyard;
  * Created by hoseasandstrom on 6/16/16.
  */
 public class Comment {
-    Integer commentId;
+    Integer id;
     String author;
     String text;
 
-    public Comment(Integer commentId, String author, String text) {
-        this.commentId = commentId;
+    public Comment(Integer id, String author, String text) {
+        this.id = id;
         this.author = author;
         this.text = text;
     }
 
-    public Integer getCommentId() {
-        return commentId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setCommentId(Integer commentId) {
-        this.commentId = commentId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getAuthor() {
