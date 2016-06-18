@@ -17,7 +17,7 @@ public class Main {
     public static void createTables(Connection conn) throws SQLException {
         Statement stmt = conn.createStatement();
         stmt.execute("CREATE TABLE IF NOT EXISTS users( userid IDENTITY, name VARCHAR, email VARCHAR)");
-        stmt.execute("CREATE TABLE IF NOT EXISTS comments( commentid IDENTITY, author VARCHAR, text VARCHAR, user_id INT)");
+        stmt.execute("CREATE TABLE IF NOT EXISTS comments( commentid IDENTITY, text VARCHAR, user_id INT)");
         stmt.execute("CREATE TABLE IF NOT EXISTS memes(memeid IDENTITY, memename VARCHAR, upvote INT, downvote INT)");
     }
 
@@ -108,8 +108,9 @@ public class Main {
         Connection conn = DriverManager.getConnection("jdbc:h2:./main");
         createTables(conn);
 
+        Spark.externalStaticFileLocation("public");
         Spark.init();
-       // Spark.externalStaticFileLocation("public");
+
 
         Spark.get(
                 "/user",
@@ -133,40 +134,8 @@ public class Main {
                 }
         );
 
-//        Spark.post(
-//                "/user",
-//                (request, response) -> {
-//                    String body = request.body();
-//                    JsonParser p = new JsonParser();
-//                    User user = p.parse(body, User.class);
-//                    insertUser(conn, user.name, user.email);
-//                    return "";
-//                }
-//        );
-//
-//
-//
-//        Spark.put(
-//                "/user",
-//                (request, response) -> {
-//                    String body = request.body();
-//                    JsonParser p = new JsonParser();
-//                    User user = p.parse(body, User.class);
-//                    updateUsers(conn, user, user.id);
-//                    return "";
-//                }
-//        );
-//
-//        //Create a DELETE route called /user/:id that gets the id via request.params(":id")
-//        // and gives it to deleteUser to delete it in the database.
-//        Spark.delete(
-//                "/user/:id",
-//                (request, response) -> {
-//                    int id = Integer.valueOf(request.params(":id"));
-//                    deleteUser(conn, id);
-//                    return "";
-//                }
-//        );
-
+        Spark.delete(
+                /
+        );
     }
 }
