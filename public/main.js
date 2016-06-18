@@ -110,6 +110,7 @@ var doYouLikeMeme = {
       data: thingCommented,
       success: function(data) {
         console.log("works", data);
+        doYouLikeMeme.create(JSON.stringify(thingCommented));
           doYouLikeMeme.comments.push(data);
           doYouLikeMeme.getPost();
       },
@@ -210,11 +211,11 @@ var doYouLikeMeme = {
 
 
 
-// var objToSave {
+// var memes {
 //
-//  id: $(img).data('id')
-//  up: 1,
-//  down: 0
+//  memename: $(img).data('id')
+//  upvote: 1,
+//  downvote: 0
 // }
 
 ////update data

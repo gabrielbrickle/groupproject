@@ -144,6 +144,62 @@ public class Main {
                     return "";
                 }
         );
+        Spark.put(
+                "/updateComment",
+                (request, response) -> {
+                    String body = request.body();
+                    JsonParser p = new JsonParser();
+                    Comment comment = p.parse(body, Comment.class);
+                    updateComment(conn, comment, comment.commentId);
+                    return "";
+                }
+        );
+
+        Spark.put(
+                "/updateUpvote",
+                (request, response) -> {
+                    String body = request.body();
+                    JsonParser p = new JsonParser();
+                    Meme meme = p.parse(body, Meme.class);
+                    int vote = meme.upVote++;
+                    int id = meme.memeId;
+                    updateUpVote(conn, vote, id);
+                    return "";
+                }
+        );
+
+        Spark.put(
+                "/updateDownvote",
+                (request, response) -> {
+                    String body = request.body();
+                    JsonParser p = new JsonParser();
+                    Meme meme = p.parse(body, Meme.class);
+                    int vote = meme.downVote++;
+                    int id = meme.memeId;
+                    updateDownVote(conn, vote, id);
+                    return "";
+                }
+        );
+
+
+        Spark.delete(
+                "/deleteComment",
+                (request, response) -> {
+                    int id = Integer.valueOf(request.queryParams("author"));
+                    Session session = request.session();
+                    String username = session.attribute("author");
+                    Comment comment = selectComment(conn, id);
+                    if(!comment.author.equals(username)){
+                        throw new Exception("you can't delete this");
+                    }
+
+                    deleteComment(conn, id);
+                    response.redirect("/meme");
+                    return "";
+                }
+        );
+
+
 
         Spark.put(
                 "/comment/:id",
