@@ -1,10 +1,13 @@
 $(document).ready(function() {
   doYouLikeMeme.init();
+
+  // doYouLikeMeme.getPost();
 })
 
 var doYouLikeMeme = {
-  url: 'http://tiny-tiny.herokuapp.com/collections/doyoulikememe',
-  urlmemes: 'http://tiny-tiny.herokuapp.com/collections/doyoulikememevotes',
+  url: '/meme',
+  urlmemes: '/users',
+  urlcomment: '/comment',
   comments: [],
   thumbclicks: [],
   init: function() {
@@ -13,7 +16,7 @@ var doYouLikeMeme = {
   },
   styling: function() {
     doYouLikeMeme.getPost();
-  },//end styling
+  },
   events: function() {
 //New Comment
   $('form').submit(function () {
@@ -22,8 +25,8 @@ var doYouLikeMeme = {
       var input_value = $(this).find('.messageval').val();
       var user_value = $(this).find('.usernameval').val();
       var thingToCreate = {
-        comment: input_value,
-        username: user_value
+        text: input_value,
+        author: user_value
       }
       doYouLikeMeme.createPost(thingToCreate)
       $('.comments').append(`<li>${user_value}${input_value}<a href=""> x</a></li>`);
@@ -31,17 +34,17 @@ var doYouLikeMeme = {
     $('input').val('');
     return false;
   })
-  //delete
-  // $(document).on('click', 'a', function (element) {
-  //   event.preventDefault();
-  //   var commentId = $(this).parent().data('id');
-  //   console.log("ID", commentId)
-  //   window.glob = $(this);
-  //   $(this).parent().remove();
-  //   doYouLikeMeme.deletePost(commentId);
-  // });
+  // delete comment
+  $(document).on('click', 'a', function (element) {
+    event.preventDefault();
+    var commentId = $(this).parent().data('id');////id needs to point to id of comment
+    console.log("ID", commentId)
+    window.glob = $(this);
+    $(this).parent().remove();
+    doYouLikeMeme.deletePost(commentId);
+  });
 
-  ////editing a post
+  ////editing a comment
   var newLiVal;
   $("ul").on('dblclick', 'li', function () {
     newLiVal = $(this).text();
@@ -55,7 +58,7 @@ var doYouLikeMeme = {
     $(this).parent().text($this.val()).append('<a href=""> ✓</a>');
     $this.remove();
     doYouLikeMeme.editPost({
-      comment: newLiVal,
+      text: newLiVal,
       _id: $this.data('id')
     })
   });
@@ -78,6 +81,7 @@ var doYouLikeMeme = {
     var thingToPost = {
       clicks: Number(1)
     }
+  //  {memeId: 1, url: "www.cdsodij.com", upVote: 4, downVote: 4, [{comment},{coment},{comment}]}
     doYouLikeMeme.createClick(thingToPost)
 });
   $('.thumbsdown').on('click', function (event) {
@@ -136,11 +140,17 @@ var doYouLikeMeme = {
       url: doYouLikeMeme.url,
       method: "GET",
       success: function(data) {
-        console.log("WE GOT SOMETHING", data);
+      //  console.log("WE GOT SOMETHING", data);
+      data=JSON.parse(data);
+
         $(".totalcomments").find('h5').text("Total Comments: " + data.length ); ///num of list items
         $('.comments').html("");
+        // data=JSON.parse(data);
+        console.log("help", data);
+
         data.forEach(function(element,idx) {
-          var toDoStr = `<li data-id="${element._id}"> ${element.username}:                     ${element.comment}<a href=""> x</a></li>`
+          console.log("help", element.author);
+          var toDoStr = `<li data-id="${element._id}"> ${element.author}: ${element.text}<a href=""> x</a></li>`
           $('.comments').append(toDoStr)
           doYouLikeMeme.comments.push(element);
         });
@@ -157,7 +167,6 @@ var doYouLikeMeme = {
       success: function(data) {
         console.log("WE GOT SOMETHING", data);
           doYouLikeMeme.thumbclicks.push('');
-        // });
       },
       error: function(err) {
         console.error("ugh", err);
@@ -208,5 +217,8 @@ var doYouLikeMeme = {
 //  up: 1,
 //  down: 0
 // }
+
+////update data
+
 
 // $('img')[0].src = "http://www.fillmurray.com/200/300"
