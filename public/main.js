@@ -35,14 +35,14 @@ var doYouLikeMeme = {
     return false;
   })
   // delete comment
-  $(document).on('click', 'a', function (element) {
-    event.preventDefault();
-    var commentId = $(this).parent().data('id');////id needs to point to id of comment
-    console.log("ID", commentId)
-    window.glob = $(this);
-    $(this).parent().remove();
-    doYouLikeMeme.deletePost(commentId);
-  });
+  // $(document).on('click', 'a', function (element) {
+  //   event.preventDefault();
+  //   var commentId = $(this).parent().data('id');////id needs to point to id of comment
+  //   console.log("ID", commentId)
+  //   window.glob = $(this);
+  //   $(this).parent().remove();
+  //   doYouLikeMeme.deletePost(commentId);
+  // });
 
   ////editing a comment
   var newLiVal;
