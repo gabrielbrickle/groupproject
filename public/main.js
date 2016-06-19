@@ -5,12 +5,7 @@ $(document).ready(function() {
 })
 
 var doYouLikeMeme = {
-  url: 'http://tiny-tiny.herokuapp.com/collections/doyoulikememe',
-  urlmemes: 'http://tiny-tiny.herokuapp.com/collections/doyoulikememevotes',
-  // url: '/meme',
-  // urlmemes: '/users',
-  // urldownvotes: '/updateDownvote',
-  // urlupvotes: '/updateUpvote',
+
   comments: [],
   thumbclicks: [],
   init: function() {
@@ -38,14 +33,14 @@ var doYouLikeMeme = {
     return false;
   })
   // delete comment
-  // $(document).on('click', 'a', function (element) {
-  //   event.preventDefault();
-  //   var commentId = $(this).parent().data('id');////id needs to point to id of comment
-  //   console.log("ID", commentId)
-  //   window.glob = $(this);
-  //   $(this).parent().remove();
-  //   doYouLikeMeme.deletePost(commentId);
-  // });
+   $(document).on('click', 'a', function (element) {
+     event.preventDefault();
+     var commentId = $(this).parent().data('id');////id needs to point to id of comment
+     console.log("ID", commentId)
+     window.glob = $(this);
+     $(this).parent().remove();
+     doYouLikeMeme.deletePost(commentId);
+   });
 
   ////editing a comment
   var newLiVal;
@@ -62,7 +57,7 @@ var doYouLikeMeme = {
     $this.remove();
     doYouLikeMeme.editPost({
       text: newLiVal,
-      _id: $this.data('id')
+      id: $this.data('id')
     })
   });
   $('.best').on('click', function(){
@@ -89,7 +84,7 @@ var doYouLikeMeme = {
       clicks: Number(1),
       meme: imageurl
     }
-  //  {memeId: 1, url: "www.cdsodij.com", upVote: 4, downVote: 4, [{comment},{coment},{comment}]}
+  //  {id: 1, url: "www.cdsodij.com", upVote: 4, downVote: 4, [{comment},{coment},{comment}]}
     doYouLikeMeme.createClick(thingToPost)
 });
   $('.thumbsdown').on('click', function (event) {
@@ -159,7 +154,7 @@ var doYouLikeMeme = {
 
         data.forEach(function(element,idx) {
           console.log("help", element.author);
-          var toDoStr = `<li data-id="${element._id}"> ${element.author}: ${element.text}<a href=""> x</a></li>`
+          var toDoStr = `<li data-id="${element.id}"> ${element.author}: ${element.text}<a href=""> x</a></li>`
           $('.comments').append(toDoStr)
           doYouLikeMeme.comments.push(element);
         });
@@ -201,7 +196,7 @@ var doYouLikeMeme = {
     editPost: function(thingToEdit) {
       console.log("THING TO EDIT", thingToEdit);
       $.ajax({
-        url: doYouLikeMeme.url + "/" + thingToEdit._id,
+        url: doYouLikeMeme.url + "/" + thingToEdit.id,
         method: "PUT",
         data: thingToEdit,
         success: function(data) {

@@ -2,15 +2,12 @@ package com.studenttheironyard;
 
 import jodd.json.JsonParser;
 import jodd.json.JsonSerializer;
-import org.h2.command.ddl.CreateTable;
 import org.h2.tools.Server;
 import spark.Session;
 import spark.Spark;
 
 import java.sql.*;
 import java.util.ArrayList;
-
-import static com.sun.tools.doclint.Entity.reg;
 
 public class Main {
 
@@ -67,12 +64,12 @@ public class Main {
     }
 
     public static Comment selectComment(Connection conn, int commentId) throws SQLException {
-        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM comments INNER JOIN users ON comments.user_id = users.id WHERE users.id = ?");
+        PreparedStatement stmt = conn.prepareStatement("SELECT * FROM comments WHERE commentid = ?");
         stmt.setInt(1, commentId);
         ResultSet results = stmt.executeQuery();
         if (results.next()) {
-            String text = results.getString("comments.text");
-            String author = results.getString("users.name");
+            String text = results.getString("text");
+            String author = results.getString("author");
             return new Comment(commentId, author, text);
         }
         return null;
@@ -80,7 +77,7 @@ public class Main {
 
 
     public static void deleteComment(Connection conn, int commentId) throws SQLException {
-        PreparedStatement stmt = conn.prepareStatement("DELETE FROM messages WHERE commentid = ?");
+        PreparedStatement stmt = conn.prepareStatement("DELETE FROM comments WHERE commentid = ?");
         stmt.setInt(1, commentId);
         stmt.execute();
     }
@@ -96,17 +93,17 @@ public class Main {
         stmt1.execute();
     }
 
-    public static void updateUpVote(Connection conn, int upVote, int memeId) throws SQLException {
+    public static void updateUpVote(Connection conn, Meme meme) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("UPDATE memes SET upvote = ? WHERE memeid= ?");
-        stmt.setInt(1, upVote);
-        stmt.setInt(2, memeId);
+        stmt.setInt(1, meme.upVote);
+        stmt.setInt(2, meme.id);
         stmt.execute();
     }
 
-    public static void updateDownVote(Connection conn, int downVote, int memeId) throws SQLException {
+    public static void updateDownVote(Connection conn, Meme meme) throws SQLException {
         PreparedStatement stmt = conn.prepareStatement("UPDATE memes SET downvote = ? WHERE memeid= ?");
-        stmt.setInt(1, downVote);
-        stmt.setInt(2, memeId);
+        stmt.setInt(1, meme.downVote);
+        stmt.setInt(2, meme.id);
         stmt.execute();
     }
 
@@ -126,7 +123,7 @@ public class Main {
         Spark.init();
 
         Spark.get(
-                "/meme",
+                "/comment",
                 (request, response) -> {
                     ArrayList<Comment> commentList = selectAllComments(conn);
                     JsonSerializer s = new JsonSerializer();
@@ -135,120 +132,63 @@ public class Main {
         );
 
         Spark.post(
-                "/meme",
+                "/comment",
                 (request, response) -> {
-                    String body = request.body();
-                    JsonParser p = new JsonParser();
-                    Comment comment = p.parse(body, Comment.class);
+                    //String body = request.body();
+                    //JsonParser p = new JsonParser();
+                    //Comment comment = p.parse(body, Comment.class);
+                    String author = request.queryParams("author");
+                    String text = request.queryParams("text");
+                    Comment comment = new Comment(null, author, text);
                     insertComment(conn, comment);
                     return "";
                 }
         );
+
         Spark.put(
-                "/updateComment",
+                "/comment/:id",
                 (request, response) -> {
                     String body = request.body();
                     JsonParser p = new JsonParser();
                     Comment comment = p.parse(body, Comment.class);
-                    updateComment(conn, comment, comment.commentId);
+                    updateComment(conn, comment, comment.id);
                     return "";
                 }
         );
 
-        Spark.put(
-                "/updateUpvote",
+        Spark.post(
+                "/meme",
                 (request, response) -> {
-                    String body = request.body();
-                    JsonParser p = new JsonParser();
-                    Meme meme = p.parse(body, Meme.class);
-                    int vote = meme.upVote++;
-                    int id = meme.memeId;
-                    updateUpVote(conn, vote, id);
+//                    String body = request.body();
+//                    JsonParser p = new JsonParser();
+//                    Meme meme = p.parse(body, Meme.class);
+//                    updateUpVote(conn, meme);
                     return "";
                 }
         );
 
-        Spark.put(
-                "/updateDownvote",
+        Spark.get(
+                "/meme",
                 (request, response) -> {
-                    String body = request.body();
-                    JsonParser p = new JsonParser();
-                    Meme meme = p.parse(body, Meme.class);
-                    int vote = meme.downVote++;
-                    int id = meme.memeId;
-                    updateDownVote(conn, vote, id);
+//                    String body = request.body();
+//                    JsonParser p = new JsonParser();
+//                    Meme meme = p.parse(body, Meme.class);
+//                    updateDownVote(conn, meme);
                     return "";
                 }
         );
 
 
         Spark.delete(
-                "/deleteComment",
+                "/comment/:id",
                 (request, response) -> {
-                    int id = Integer.valueOf(request.queryParams("author"));
-                    Session session = request.session();
-                    String username = session.attribute("author");
-                    Comment comment = selectComment(conn, id);
-                    if(!comment.author.equals(username)){
-                        throw new Exception("you can't delete this");
-                    }
-
-                    deleteComment(conn, id);
-                    response.redirect("/meme");
-                    return "";
-                }
-        );
-
-
-
-        Spark.put(
-                "/updateComment",
-                (request, response) -> {
-                    String body = request.body();
-                    JsonParser p = new JsonParser();
-                    Comment comment = p.parse(body, Comment.class);
-                    updateComment(conn, comment, comment.commentId);
-                    return "";
-                }
-        );
-
-        Spark.put(
-                "/updateUpvote",
-                (request, response) -> {
-                    String body = request.body();
-                    JsonParser p = new JsonParser();
-                    Meme meme = p.parse(body, Meme.class);
-                    int vote = meme.upVote++;
-                    int id = meme.memeId;
-                    updateUpVote(conn, vote, id);
-                    return "";
-                }
-        );
-
-        Spark.put(
-                "/updateDownvote",
-                (request, response) -> {
-                    String body = request.body();
-                    JsonParser p = new JsonParser();
-                    Meme meme = p.parse(body, Meme.class);
-                    int vote = meme.downVote++;
-                    int id = meme.memeId;
-                    updateDownVote(conn, vote, id);
-                    return "";
-                }
-        );
-
-
-        Spark.delete(
-                "/deleteComment",
-                (request, response) -> {
-                    int id = Integer.valueOf(request.queryParams("author"));
-                    Session session = request.session();
-                    String username = session.attribute("author");
-                    Comment comment = selectComment(conn, id);
-                    if(!comment.author.equals(username)){
-                        throw new Exception("you can't delete this");
-                    }
+                    int id = Integer.valueOf(request.params(":id"));
+//                    Session session = request.session();
+//                    String username = session.attribute("author");
+//                    Comment comment = selectComment(conn, id);
+//                    if(!comment.author.equals(username)){
+//                        throw new Exception("you can't delete this");
+//                    }
 
                     deleteComment(conn, id);
                     response.redirect("/meme");
