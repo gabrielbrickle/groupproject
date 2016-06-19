@@ -8,7 +8,7 @@ var doYouLikeMeme = {
     urlmemes: 'http://tiny-tiny.herokuapp.com/collections/doyoulikememevotes',
 // FOR BACK END
 //     url: '/comment',
-//     urlmemes: '/meme',  
+//     urlmemes: '/meme',
     comments: [],
     thumbclicks: [],
     meme: [],
@@ -37,13 +37,13 @@ var doYouLikeMeme = {
                 return false;
             })
         // Delete Comment From a Meme
-        $('.deletebutton').on('click', function(element) {
-            event.preventDefault();
-            var commentId = $(this).parent().data('id'); ////id needs to point to id of comment
-            console.log("ID", commentId)
-            window.glob = $(this);
-            $(this).parent().remove();
-            doYouLikeMeme.deletePost(commentId);
+        $('.comments').on('click', 'a', function (element) {
+          event.preventDefault();
+          var commentId = $(this).parent().data('id');
+          console.log("ID", commentId)
+          window.glob = $(this);
+          $(this).parent().remove();
+          doYouLikeMeme.deletePost(commentId);
         });
         ////Editing a Comment. Double click and 'enter' key to edit.
         var newLiVal;
@@ -139,16 +139,16 @@ var doYouLikeMeme = {
     },
     deletePost: function(commentId) {
         var DeletePost = doYouLikeMeme.url + "/" + commentId;
-        $.ajax({
+          $.ajax({
             url: DeletePost,
             method: "DELETE",
             success: function(data) {
-                console.log("WE DELETED SOMETHING", data);
-                doYouLikeMeme.getPost();
+              console.log("WE DELETED SOMETHING", data);
+              doYouLikeMeme.getPost();
 
             },
             error: function(err) {
-                console.error("ugh", err);
+              console.error("ugh", err);
             }
         })
     },
