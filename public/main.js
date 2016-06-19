@@ -5,10 +5,12 @@ $(document).ready(function() {
 })
 
 var doYouLikeMeme = {
-  url: '/meme',
-  urlmemes: '/users',
-  urldownvotes: '/updateDownvote',
-  urlupvotes: '/updateUpvote',
+  url: 'http://tiny-tiny.herokuapp.com/collections/doyoulikememe',
+  urlmemes: 'http://tiny-tiny.herokuapp.com/collections/doyoulikememevotes',
+  // url: '/meme',
+  // urlmemes: '/users',
+  // urldownvotes: '/updateDownvote',
+  // urlupvotes: '/updateUpvote',
   comments: [],
   thumbclicks: [],
   init: function() {
@@ -71,16 +73,21 @@ var doYouLikeMeme = {
     event.preventDefault();
     console.log("you clicked worst");
   });
-
+////This begins the click events for thumbs up and thumbs down. On the click of thumbs up, we post a 1 to the server data. On the click of thumbs down, we post a -1 to the server data.
   $('.thumbsup').on('click', function (event) {
     event.preventDefault();
+    var imageurl = ['images/hide.png','images/sleep.png','images/baby.png','images/codeworks.png','images/front.png',];
+    console.log(imageurl[3]);
+    $('.images').find('img');
+
 
     var element = event.currentTarget;
     element.clicks = (element.clicks || 0) + 1;
     console.log(element.clicks);
     // .getElementById(data.)
     var thingToPost = {
-      clicks: Number(1)
+      clicks: Number(1),
+      meme: imageurl
     }
   //  {memeId: 1, url: "www.cdsodij.com", upVote: 4, downVote: 4, [{comment},{coment},{comment}]}
     doYouLikeMeme.createClick(thingToPost)
