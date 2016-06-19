@@ -3,10 +3,12 @@ $(document).ready(function() {
 })
 
 var doYouLikeMeme = {
+////Need to insert links for back end /comment /meme. tiny tiny for testing
     url: 'http://tiny-tiny.herokuapp.com/collections/doyoulikememe',
     urlmemes: 'http://tiny-tiny.herokuapp.com/collections/doyoulikememevotes',
     comments: [],
     thumbclicks: [],
+    meme: [],
     init: function() {
         doYouLikeMeme.styling();
         doYouLikeMeme.events();
@@ -15,7 +17,7 @@ var doYouLikeMeme = {
         doYouLikeMeme.getPost();
     },
     events: function() {
-        //New Comment
+        //Creating a New Comment on Meme. Appends author:text
         $('form').submit(function() {
                 event.preventDefault();
                 if ($('input').val() !== '') {
@@ -31,7 +33,7 @@ var doYouLikeMeme = {
                 $('input').val('');
                 return false;
             })
-            // delete comment
+        // Delete Comment From a Meme
         $('.deletebutton').on('click', function(element) {
             event.preventDefault();
             var commentId = $(this).parent().data('id'); ////id needs to point to id of comment
@@ -40,8 +42,7 @@ var doYouLikeMeme = {
             $(this).parent().remove();
             doYouLikeMeme.deletePost(commentId);
         });
-
-        ////editing a comment
+        ////Editing a Comment. Double click and 'enter' key to edit.
         var newLiVal;
         $("ul").on('dblclick', 'li', function() {
             newLiVal = $(this).text();
@@ -59,68 +60,13 @@ var doYouLikeMeme = {
                 id: $this.data('id')
             })
         });
-        $('.best').on('click', function() {
-            event.preventDefault();
-            console.log("you clicked best");
-            $('.fivepics').removeClass('hidden');
-            $('.images').addClass('hidden');
-            $('.thumbs').addClass('hidden');
-            $('.commentforms').addClass('hidden');
-            $('h2').text("Top Memes");
-        });
-        $('.worst').on('click', function() {
-            event.preventDefault();
-            console.log("you clicked worst");
-            $('.fivepics').removeClass('hidden');
-            $('.images').addClass('hidden');
-            $('.thumbs').addClass('hidden');
-            $('.commentforms').addClass('hidden');
-            $('h2').text("Worst Memes");
-
-        });
         //////Reload the page when clicking on the header. This is to return to the homescreen when on "top memes" or "worst memes" page//
         $('.top').on('click', function (){
           event.preventDefault();
           window.location.reload();
         })
-        ////This begins the click events for thumbs up and thumbs down. On the click of thumbs up, we post a 1 to the server data. On the click of thumbs down, we post a -1 to the server data.
-        $('.thumbsup').on('click', function(event) {
-            event.preventDefault();
-            var imageurl = ['images/hide.png', 'images/sleep.png', 'images/baby.png', 'images/codeworks.png', 'images/front.png', ];
-            ///looop to get random image
-            console.log(imageurl[3]);
-            document.getElementById("memeimage").src="images/sleep.png";////replace image with image from array ie imageurl[2]
-
-            var element = event.currentTarget;
-            element.clicks = (element.clicks || 0) + 1;
-            console.log(element.clicks);
-            // .getElementById(data.)
-            var thingToPost = {
-                    clicks: Number(1),
-                    // meme: imageurl
-                }
-            doYouLikeMeme.createClick(thingToPost)
-        });
-        $('.thumbsdown').on('click', function(event) {
-            event.preventDefault();
-            var element = event.currentTarget;
-            // element.clicks = (element.clicks || 0) - 1;
-            var total_clicks = element.clicks;
-            var thingToPost = {
-                clicks: Number(-1)
-            }
-            doYouLikeMeme.createClick(thingToPost)
-        });
-
-
-        /////getting images off of the page1image
-        var img = document.getElementsByTagName('img');
-        var image = img; /////this returns an array of images
-        console.log(image[1]); /////this returns the second image in the array
     },
-
-    ///begin ajax
-
+    ///Begin GET, POST, DELETE, PUT
     createPost: function(thingCommented) {
         $.ajax({
             url: doYouLikeMeme.url,
@@ -144,7 +90,7 @@ var doYouLikeMeme = {
             data: thingClicked,
             success: function(data) {
                 console.log("works", data);
-                doYouLikeMeme.thumbclicks.push(data);
+                doYouLikeMeme.thumbclicks.meme.push(data);
                 doYouLikeMeme.getPost();
             },
             error: function(err) {
@@ -162,9 +108,9 @@ var doYouLikeMeme = {
                 // data = JSON.parse(data);
                 $(".totalcomments").find('h5').text("Total Comments: " + data.length); ///num of list items
                 $('.comments').html("");
-                console.log("help", data);
+                console.log("data", data);
                 data.forEach(function(element, idx) {
-                    console.log("this is the author",element.author);
+                    // console.log("this is the author",element.author);
                     var toDoStr = `<li > ${element.author}: ${element.text}<a href=""> x</a></li>`
                     $('.comments').append(toDoStr)
                     doYouLikeMeme.comments.push(element);
@@ -181,7 +127,7 @@ var doYouLikeMeme = {
             method: "GET",
             success: function(data) {
                 console.log("WE GOT SOMETHING", data);
-                doYouLikeMeme.thumbclicks.push('');
+                doYouLikeMeme.thumbclicks.meme.push('');
             },
             error: function(err) {
                 console.error("ugh", err);
@@ -219,21 +165,4 @@ var doYouLikeMeme = {
             }
         })
     },
-
-
 };
-
-
-
-
-// var memes {
-//
-//  memename: $(img).data('id')
-//  upvote: 1,
-//  downvote: 0
-// }
-
-////update data
-
-
-// $('img')[0].src = "http://www.fillmurray.com/200/300"
