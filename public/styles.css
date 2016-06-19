@@ -127,3 +127,10 @@ height: 320px;
 .images img {
   border: solid black 1px;
 }
+.fivepics {
+  display: inline-block;
+}
+.fivepics img {
+  display: inline-block;
+  margin-bottom: 30px;
+}

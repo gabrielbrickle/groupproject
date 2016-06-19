@@ -62,11 +62,27 @@ var doYouLikeMeme = {
         $('.best').on('click', function() {
             event.preventDefault();
             console.log("you clicked best");
+            $('.fivepics').removeClass('hidden');
+            $('.images').addClass('hidden');
+            $('.thumbs').addClass('hidden');
+            $('.commentforms').addClass('hidden');
+            $('h2').text("Top Memes");
         });
         $('.worst').on('click', function() {
             event.preventDefault();
             console.log("you clicked worst");
+            $('.fivepics').removeClass('hidden');
+            $('.images').addClass('hidden');
+            $('.thumbs').addClass('hidden');
+            $('.commentforms').addClass('hidden');
+            $('h2').text("Worst Memes");
+
         });
+        //////Reload the page when clicking on the header. This is to return to the homescreen when on "top memes" or "worst memes" page//
+        $('.top').on('click', function (){
+          event.preventDefault();
+          window.location.reload();
+        })
         ////This begins the click events for thumbs up and thumbs down. On the click of thumbs up, we post a 1 to the server data. On the click of thumbs down, we post a -1 to the server data.
         $('.thumbsup').on('click', function(event) {
             event.preventDefault();
@@ -83,7 +99,6 @@ var doYouLikeMeme = {
                     clicks: Number(1),
                     // meme: imageurl
                 }
-                //  {id: 1, url: "www.cdsodij.com", upVote: 4, downVote: 4, [{comment},{coment},{comment}]}
             doYouLikeMeme.createClick(thingToPost)
         });
         $('.thumbsdown').on('click', function(event) {
