@@ -44,25 +44,31 @@ $('.worst').on('click', function() {
 });
 $('.login').on('click', function() {
     event.preventDefault();
-    $('.images').addClass('hidden');
     $('.thumbs').addClass('hidden');
     $('.commentforms').addClass('hidden');
     $('h5').addClass('hidden');
     $('h2').text("COMING SOON");
+    document.getElementById("memeimage").src="images/awkward.png";
+    document.getElementById('memeimage').style.marginLeft = '75px'
+
+
   });
 $('.contact').on('click', function() {
     event.preventDefault();
-    $('.images').addClass('hidden');
     $('.thumbs').addClass('hidden');
     $('.commentforms').addClass('hidden');
     $('h5').addClass('hidden');
     $('h2').text("COMING SOON");
+    document.getElementById("memeimage").src="images/awkward.png";
+    document.getElementById('memeimage').style.marginLeft = '75px'
+
   });
 $('.create').on('click', function() {
     event.preventDefault();
-    $('.images').addClass('hidden');
     $('.thumbs').addClass('hidden');
     $('.commentforms').addClass('hidden');
     $('h5').addClass('hidden');
     $('h2').text("COMING SOON");
+    document.getElementById("memeimage").src="images/awkward.png";
+    document.getElementById('memeimage').style.marginLeft = '75px'
   });
