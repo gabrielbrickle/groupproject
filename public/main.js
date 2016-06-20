@@ -31,7 +31,7 @@ var doYouLikeMeme = {
                         author: user_value
                     }
                     doYouLikeMeme.createPost(thingToCreate)
-                    $('.comments').append(`<li>${user_value}${input_value}<a href=""> x</a></li>`);
+                    $('.comments').append(`<li>${user_value}${input_value}<a href="">     (delete)</a></li>`);
                 };
                 $('input').val('');
                 return false;
@@ -50,13 +50,13 @@ var doYouLikeMeme = {
         $("ul").on('dblclick', 'li', function() {
             newLiVal = $(this).text();
             $(this).text("");
-            $("<input type='text'"+ $(this).data('id') + "'>").appendTo(this).focus();
+            $("<input type='text' data-id='"+ $(this).data('id') + "'>").appendTo(this).focus();
         });
         $("ul").on('focusout', 'li > input', function() {
             var $this = $(this);
             var newLiVal = $this.val()
             $this.text($this.val());
-            $(this).parent().text($this.val()).append('<a href=""> ✓</a>');
+            $(this).parent().text($this.val()).append('<a href="">     (delete)</a>');
             $this.remove();
             doYouLikeMeme.editPost({
                 text: newLiVal,
@@ -114,7 +114,7 @@ var doYouLikeMeme = {
                 console.log("data", data);
                 data.forEach(function(element, idx) {
                     // console.log("this is the author",element.author);
-                    var toDoStr = `<li > ${element.author}: ${element.text}<a href=""> x</a></li>`
+                    var toDoStr = `<li data-id="${element._id}"> ${element.author}: ${element.text}<a href="">      (delete)</a></li>`
                     $('.comments').append(toDoStr)
                     doYouLikeMeme.comments.push(element);
                 });
