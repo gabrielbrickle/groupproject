@@ -1,0 +1,63 @@
+.best a {
+    margin-right: 15px;
+    width: 144px;
+    /*padding-right: 47px;*/
+    color: #0cf;
+    border-bottom: 3px solid #0cf;
+    &:hover {
+        border-bottom: 10px solid #0cf;
+    }
+}
+.create a {
+    margin-right: 15px;
+    width: 144px;
+    color: #fff35c;
+    border-bottom: 3px solid #fff35c;
+    &:hover {
+        border-bottom: 10px solid #fff35c;
+    }
+}
+
+.contact a {
+    margin-right: 15px;
+    width: 144px;
+    color: #f66;
+    border-bottom: 3px solid #f66;
+    &:hover {
+        border-bottom: 10px solid #f66;
+    }
+}
+
+.login a {
+    margin-right: 15px;
+    width: 144px;
+    color: #9932cc;
+    border-bottom: 3px solid #9932cc;
+    &:hover {
+        border-bottom: 10px solid #9932cc;
+    }
+}
+
+.worst a {
+    margin-right: 15px;
+    width: 144px;
+    color: #0f9;
+    border-bottom: 3px solid #0f9;
+    &:hover {
+        border-bottom: 10px solid #0f9;
+    }
+}
+
+h2 {
+    font-family: 'Candal', sans-serif;
+    font-weight: bolder;
+    text-align: center;
+    font-size: 53px;
+    margin-top: 19px;
+    color: white;
+}
+.top {
+    left: 0;
+    right: 0;
+    height: 70px;
+}

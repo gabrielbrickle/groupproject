@@ -1,0 +1,43 @@
+button {
+    background-color: black;
+    border: none;
+}
+#usermsg {
+    width: 100%;
+    font-family: 'Open Sans', sans-serif;
+}
+.comments {
+    font-size: 16px;
+    border: solid 1px;
+    background-color: #fff;
+    color: grey;
+    font-family: 'Open Sans', sans-serif;
+    a {
+        color: grey;
+        text-decoration: none;
+    }
+    li {
+        margin-bottom: 37px;
+    }
+    &:hover {
+        color: red;
+    }
+}
+
+.comment {
+    display: inline-block;
+}
+.usernameval {
+    display: inline-block;
+    width: 100%;
+    margin-bottom: 15px;
+    font-family: 'Open Sans', sans-serif;
+}
+.commentforms {
+    margin-top: -134px;
+    border: solid 1px grey;
+    padding: 10px;
+}
+h5 {
+    color: #fff;
+}
