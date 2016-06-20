@@ -7,8 +7,8 @@ var doYouLikeMeme = {
     url: 'http://tiny-tiny.herokuapp.com/collections/doyoulikememe',
     urlmemes: 'http://tiny-tiny.herokuapp.com/collections/doyoulikememevotes',
 // FOR BACK END
-//     url: '/comment',
-//     urlmemes: '/meme',
+    // url: '/comment',
+    // urlmemes: '/meme',
     comments: [],
     thumbclicks: [],
     meme: [],
